@@ -1,0 +1,93 @@
+CE FICHIER EXPLIQUE COMMENT UTILISER LES FICHIERS MAIN.PY ET BASE.PY
+
+_ LE FICHIER BASE.PY CONTIENT TOUTES LES FONCTIONS DE BASES UTILE À LA RÉALISATION DE CE PROJET.
+
+_ LE FICHIER MAIN.PY EST FICHIER OU L'UTILISATEUR PEUT UTILISER TOUTES LES FONCTIONS PRÉSENTES DANS LE FICHIER BASE.PY GRACE A UNE IMPORTATION.
+
+
+  _ RÉSUMÉ DES FICHIERS :
+
+    	   _ BASE.PY :
+
+	     	     _ constru_maillage(fichier,n_h,n_v,l_h,l_v) : Prends en arguments un nom de ficher (existant ou non existant) fichier, deux entiers n_h et n_v, et deux réels l_h et l_v. Et construit le fichier de maillage d'un rectangle de longueur horizontale l_h, verticale l_v, qui a n_h point de discrétisation à l'ohorizontale et n_v point de discrétisation à la verticale.
+
+		     Attention : le format du fichier de maillage construit est un format allégé de celui de GSMH (on désignera ici ce format par l'extension .msh) et différent de celui présenté dans le projet.
+
+
+
+		     _ convertMSHtoMESH(filename) : Prends en argument un nom de ficher déja existant filename et convertit le format .msh en .mesh format présenté dans le projet.
+		     Attention : La chaîne de caractère est ici dépourvu d'extension. Cette routine crée un fichier du même nom que celui qui existe déjà et en change le format i.e. l'extension.
+
+
+	     	     _ read(filename) : Prends en argument un nom de ficher déja existant filename. Lit le fichier de maillage au nom filename au format .mesh et renvoie le tableau des noeuds (Nodes) du maillages et des triangles (Element).
+		     Elle est à utiliser comme suit :
+		     >> [Nodes, Element] = read(filename)
+
+		     Attention : les noeuds sont indicés à partir de 1, l'utilisateur prêtera donc attention à utiliser : Element ou Element - 1 selon l'usage.
+
+
+
+		     _ PlotMesh(filename) : Prends en argument un nom de ficher déja existant filename. affiche le maillage issu du fichier de maillage au nom de filename au format .mesh.
+
+
+
+		     _ PlotOnMesh(f, filename, title = "") : Prends en arguments un vecteur f, un nom de ficher déja existant filename et une chaine de caractère title. Trace f sur le maillage issu du fichier de maillage au nom de filename au format .mesh. Elle dispose également d'une option title pour afficher un titre sur le graphe de sortie, titre qui est par défaut vide.
+
+
+
+		     _ MassElem(s1,s2,s3) :  Prends en arguments trois réels s1, s2 et s2 et renvoit la matrice de masse élémentaire associée au triangle composé des noeuds s1, s2 et s3.
+
+
+
+		     _ Mass(filename) : Prends en argument un nom de ficher déja existant filename et renvoit la matrice de masse associée au maillage qui porte le nom filename.
+
+
+
+		     _ RigElem(s1,s2,s3) : Prends en arguments trois réels s1, s2 et s3 et  renvoit la matrice de rigidité élémentaire associée au triangle composé des noeuds s1, s2 et s3.
+
+
+
+		     _ Rig(filename) : Prends en argument un nom de ficher déja existant filename et renvoit la matrice de rigidité associée au maillage qui porte le nom filename.
+
+
+
+		     _ FindBoundary(filename) : Prends en argument un nom de ficher déja existant filename. Renvoit deux tableaux de même taille, le premier contient les arètes du bord du maillage décrit par le fichier filename, et le deuxième donne pour chacune des arètes présentes dans le premier à la même position le numéro du noeud avec lequel l'arète forme un triangle du maillage dans le tableau Nodes.
+
+
+
+		     _ norm(v) : Prends en argument un vecteur v et renvoit la norme L2 du vecteur v.
+
+
+
+		     _ g(x,w,d,Normal) : Prends en arguments un couple x, un paramêtre complexe w, un vecteur unitaire d et la normale à l'arète qui contient x que l'on regarde. Et renvoit la valeur du second membre g au point x.
+
+
+
+		     _ Uref(Nodes,w,d) : Prends en arguments le tableau des noeuds d'un maillage, un paramêtre complexe w et un vecteur unitaire d. Et renvoit le tableau des valeurs de la solution exacte du problème lorsque le second membre est donné par (2) aux points contenu dans le tableau Nodes.
+
+
+
+
+		     _ ExtNormal(Edge, ThirdPoint, Nodes) : Prends en arguments un couple d'entier Edge, un entier ThirdPoint et un tableau de coordonnées Nodes. Et renvoit la normale extérieur unitaire à l'arète Edge qui forme un triangle sur le bord avec ThirdPoint.
+
+
+
+
+		     _ EdgeElem(g,edge,Nodes,w,d,Normal) : Prends en arguments une fonction g, un couple d'indices edge, un tableau de coordonnées Nodes, un paramêtre complexe w, un vecteur unitaire d et un vecteur Normal. Et renvoit deux nombres, la contribution des fonctions de formes qui valent 1 en chacun des points de l'arète edge le long de celle çi dans le calcul du second membre.
+
+
+
+		     _ BoundaryCondition(Nodes,Bound,ThirdPoint,w,d) : Prends en arguments un tableau de coordonnées Nodes, une liste de couple d'entier Bound, une liste d'entier ThirdPoint, un paramêtre w et un vecteur unitaire d. Et renvoit le second membre du système linéaire à résoudre.
+
+
+
+		     _ FiniteElementP1(filename,w,d,trace) : Prends en arguments un nom de fichier déjà existant filename, un paramêtre complexe w, un vecteur unitaire d et un booléen trace. Et calcul la solution du problème de Helmholtz et la trace si trace vaut 1.
+
+
+
+
+		     _ CaractSize(filename) : Prends en argument un nom de ficher qui existe déjà et renvoie la longueur du plus grands côté des triangles qui sont décrit dans le fichier au nom de filename.
+
+
+
+		     _ RelativeError(k,d) : Prends en arguments un entier k allant de 1 à 7, et un vecteur unitaire d et trace une courbe pour chaque w dans [5,10,20,40,80] ayant k points un par maillage fournit.

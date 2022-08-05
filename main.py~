@@ -1,0 +1,61 @@
+import base
+
+import numpy as np
+import math
+import cmath
+import matplotlib.pyplot as plt
+import matplotlib.tri as tri
+from scipy.sparse import csr_matrix
+import scipy.sparse.linalg as spla
+import subprocess
+
+w = 3
+d = [1,0]
+
+#tab_valp = open("tab_valp.txt","w")
+
+for i in []:
+
+    filename = "maillages/maillage" + i + ".mesh"
+
+    #valp, vectp = base.EigVal(filename)
+
+    #print(valp)
+
+    #for k in range(6):
+
+        #tab_valp.write(str(round(valp[k],3))+"\t")
+
+    #tab_valp.write("\n")
+    
+    
+    base.FiniteElementP1(filename,w,d,1)
+
+
+#k = 7
+
+#base.RelativeError(k,d)
+
+filename = "maillages/maillage1.mesh"
+
+M = -(w**2)*base.Mass(filename)
+
+print(M)
+
+[Nodes, Element] = base.read(filename)
+
+[Bound, ThirdPoint] = base.FindBoundary(filename)
+
+for q in range(len(Bound)):
+    Norm = base.ExtNormal(Bound[q],ThirdPoint[q],Nodes)
+    #print(Bound[q],"=>", Norm)
+
+B = base.BoundaryCondition(Nodes,Bound,ThirdPoint,w,d)
+
+#print(B)
+
+#base.PlotMesh(filename)
+
+#N = len(Element)
+
+#print(base.CaractSize(filename))
